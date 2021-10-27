@@ -4,3 +4,7 @@
 [submodule "pin-back"]
 	path = pin-back
 	url = https://github.com/deerr1/pin-back.git
+[submodele "pin-front"]
+	branch = master
+[submodele "pin-back"]
+	branch = master
