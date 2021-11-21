@@ -1,16 +1,16 @@
 version: '3.9'
 services:
   front:
-    image: deerr1/pinproject_front
-    build: pin-front
+    image: deerr1/pinproject_front:v1.0.0
+    # build: pin-front
     # comand: run serve
     # volumes:
     #   - ./pin-front:/app/front
     ports:
       - 8082:5001
   back:
-    image: deerr1/pinproject_back
-    build: pin-back
+    image: deerr1/pinproject_back:v1.0.0
+    # build: pin-back
     command: bash -c "python3 manage.py migrate
             && python3 manage.py runserver 0.0.0.0:5000"
     # volumes:
