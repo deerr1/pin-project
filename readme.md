@@ -1,7 +1,8 @@
 # Документация
 ## Требования работы
-Для работы вам необходимо установить Docker desctop с официальноно [сайта](https://www.docker.com/products/docker-desktop)
-
+- Для работы вам необходимо установить Docker desctop с официальноно [сайта](https://www.docker.com/products/docker-desktop)
+- Скачать этот репозиторий и по необходимости скачать сабмодули с помощью команд:\
+ `git submodule init` и `git submodule update`
 ## Запуск
 Для запуска проекта необходимо выполнить команду\
 `docker-compose up`
