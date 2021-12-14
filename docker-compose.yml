@@ -1,9 +1,13 @@
 version: '3.9'
+networks:
+  waiting_for_conteiner:
 services:
   front:
     image: front
     container_name: front
     build: ./pin-front
+    networks:
+     - waiting_for_conteiner
     # comand: run serve
     # volumes:
     #   - ./pin-front:/app/front
@@ -13,6 +17,8 @@ services:
     image: back
     container_name: back
     build: ./pin-back
+    networks:
+     - waiting_for_conteiner
     command: bash -c "python3 manage.py migrate
             && python3 manage.py runserver 0.0.0.0:5000"
     # volumes:
@@ -25,6 +31,8 @@ services:
     image: postgres
     container_name: db
     restart: always
+    networks:
+     - waiting_for_conteiner
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
