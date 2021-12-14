@@ -13,7 +13,8 @@ services:
     image: back
     container_name: back
     build: ./pin-back
-    command: bash -c "python3 manage.py migrate
+    command: bash -c "sleep 5
+            && python3 manage.py migrate
             && python3 manage.py runserver 0.0.0.0:5000"
     # volumes:
     #   - ./pin-back:/app/back
