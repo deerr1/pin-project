@@ -1,13 +1,9 @@
 version: '3.9'
-networks:
-  waiting_for_conteiner:
 services:
   front:
     image: front
     container_name: front
     build: ./pin-front
-    networks:
-     - waiting_for_conteiner
     # comand: run serve
     # volumes:
     #   - ./pin-front:/app/front
@@ -30,8 +26,6 @@ services:
     image: postgres
     container_name: db
     restart: always
-    networks:
-     - waiting_for_conteiner
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
