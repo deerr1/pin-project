@@ -4,6 +4,7 @@ services:
     image: front
     container_name: front
     build: ./pin-front
+    ports:
       - 8082:5001
   back:
     image: back
