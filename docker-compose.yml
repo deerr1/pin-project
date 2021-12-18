@@ -1,15 +1,13 @@
 version: '3.9'
 services:
   front:
-    image: front
+    image: leekpuh/front:0.1
     container_name: front
-    build: ./pin-front
     ports:
       - 8082:5001
   back:
-    image: back
+    image: leekpuh/back:0.1
     container_name: back
-    build: ./pin-back
     command: bash -c "python3 manage.py migrate
             && python3 manage.py runserver 0.0.0.0:5000"
     ports:
