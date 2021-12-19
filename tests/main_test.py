@@ -245,7 +245,7 @@ class MainTestCase(unittest.TestCase):
             try:
                 elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(1) > div > div:nth-child(3) > button')
                 elem.click()
-                elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(6) > div > div > div:nth-child(2) > div.q-item__section.column.q-item__section--main.justify-center > div')
+                elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(6) > div > div > div:nth-child(3) > div.q-item__section.column.q-item__section--main.justify-center > div')
                 if elem.text == 'Выйти':
                     break
             except NoSuchElementException:
@@ -254,7 +254,7 @@ class MainTestCase(unittest.TestCase):
             self.assert_(False, 'Не удалось авторизоваться')
 
         # Выйти
-        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(6) > div > div > div:nth-child(2) > div.q-item__section.column.q-item__section--main.justify-center > div')
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(6) > div > div > div:nth-child(3) > div.q-item__section.column.q-item__section--main.justify-center > div')
         elem.click()
         time.sleep(1)
 
@@ -282,7 +282,7 @@ class MainTestCase(unittest.TestCase):
             try:
                 elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(1) > div > div:nth-child(3) > button')
                 elem.click()
-                elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(6) > div > div > div:nth-child(2) > div.q-item__section.column.q-item__section--main.justify-center > div')
+                elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(6) > div > div > div:nth-child(3) > div.q-item__section.column.q-item__section--main.justify-center > div')
                 if elem.text == 'Выйти':
                     break
             except NoSuchElementException:
@@ -381,7 +381,7 @@ class MainTestCase(unittest.TestCase):
             try:
                 elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(1) > div > div:nth-child(3) > button')
                 elem.click()
-                elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(6) > div > div > div:nth-child(2) > div.q-item__section.column.q-item__section--main.justify-center > div')
+                elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(6) > div > div > div:nth-child(3) > div.q-item__section.column.q-item__section--main.justify-center > div')
                 if elem.text == 'Выйти':
                     break
             except NoSuchElementException:
@@ -412,14 +412,14 @@ class MainTestCase(unittest.TestCase):
         elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(7) > div > div.q-dialog__inner.flex.no-pointer-events.q-dialog__inner--minimized.q-dialog__inner--standard.fixed-full.flex-center > div > form > div.row.justify-between.q-mx-lg > div.col-6 > label.q-field.row.no-wrap.items-start.q-field--outlined.q-input.q-field--rounded.q-field--labeled.q-field--error.q-field--highlighted.q-field--with-bottom > div > div.q-field__bottom.row.items-start.q-field__bottom--animated > div > div')
         self.assertEqual(elem.text, "Заполните название", 'Нет сообщения об ошибке')
 
-        # Выбрать доску
-        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(7) > div > div.q-dialog__inner.flex.no-pointer-events.q-dialog__inner--minimized.q-dialog__inner--standard.fixed-full.flex-center > div > form > div.row.justify-between.q-mx-lg > div.col-6 > div > label > div > div')
-        elem.click()
-        time.sleep(0.5)
+        # # Выбрать доску
+        # elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(7) > div > div.q-dialog__inner.flex.no-pointer-events.q-dialog__inner--minimized.q-dialog__inner--standard.fixed-full.flex-center > div > form > div.row.justify-between.q-mx-lg > div.col-6 > div > label > div > div')
+        # elem.click()
+        # time.sleep(0.5)
 
-        elem: WebElement = self.driver.find_element(By.XPATH, "//div[@class='q-virtual-scroll__content']/div[1]")
-        elem.click()
-        time.sleep(0.5)
+        # elem: WebElement = self.driver.find_element(By.XPATH, "//div[@class='q-virtual-scroll__content']/div[1]")
+        # elem.click()
+        # time.sleep(0.5)
 
         # Название пина
         elem: WebElement = self.driver.find_element(By.XPATH, "//form[@class='q-form column justify-around q-mt-lg']//label[1]//input")
@@ -443,7 +443,7 @@ class MainTestCase(unittest.TestCase):
         time.sleep(2)
 
         # Проверка созданного пина на доске
-        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(2) > div.q-pa-md > div > div > div.q-tab-panels.q-panel-parent > div > div > div.folders > div:nth-child(1)')
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(2) > div.q-pa-md > div > div > div.q-tab-panels.q-panel-parent > div > div > div.folders > div > div')
         elem.click()
         time.sleep(1)
 
@@ -481,7 +481,7 @@ class MainTestCase(unittest.TestCase):
             try:
                 elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(1) > div > div:nth-child(3) > button')
                 elem.click()
-                elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(6) > div > div > div:nth-child(2) > div.q-item__section.column.q-item__section--main.justify-center > div')
+                elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(6) > div > div > div:nth-child(3) > div.q-item__section.column.q-item__section--main.justify-center > div')
                 if elem.text == 'Выйти':
                     break
             except NoSuchElementException:
@@ -514,16 +514,10 @@ class MainTestCase(unittest.TestCase):
         elem.click()
         time.sleep(1)
 
-        # Выбрать доску
+        # Закрыть меню
         elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(2) > div > div > div > div.row.col-6 > div.row.justify-between.col-12 > div.row.justify-between.col-9.self-center > label > div > div')
         elem.click()
         time.sleep(0.1)
-        elem.click()
-        time.sleep(0.1)
-
-        elem: WebElement = self.driver.find_element(By.XPATH, "//div[@class='q-virtual-scroll__content']/div[1]")
-        elem.click()
-        time.sleep(0.2)
 
         # Сохранить пин
         elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, "#app > div:nth-child(2) > div > div > div > div.row.col-6 > div.row.justify-between.col-12 > div.row.justify-between.col-9.self-center > button")
@@ -531,7 +525,7 @@ class MainTestCase(unittest.TestCase):
         time.sleep(0.2)
 
         # Сохранить название пина
-        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, "#app > div:nth-child(2) > div > div > div > div.row.col-6 > div.column.q-mx-sm.col-12 > div.self-center.q-my-sm.text-h5")
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, "#app > div:nth-child(2) > div > div > div > div.row.col-6 > div.column.q-mx-sm.col-12 > div.self-center.q-my-sm.text-h4")
         pin_text = elem.text
 
         # Переход в свой профиль
@@ -539,7 +533,7 @@ class MainTestCase(unittest.TestCase):
         time.sleep(2)
 
         # Проверка пина на своей доске
-        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(2) > div.q-pa-md > div > div > div.q-tab-panels.q-panel-parent > div > div > div.folders > div:nth-child(1)')
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(2) > div.q-pa-md > div > div > div.q-tab-panels.q-panel-parent > div > div > div.folders > div > div')
         elem.click()
         time.sleep(0.2)
 
