@@ -3,6 +3,7 @@ import subprocess
 import unittest
 from sqlalchemy import create_engine, text
 from selenium import webdriver
+from webdriver_manager import driver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
@@ -412,15 +413,6 @@ class MainTestCase(unittest.TestCase):
         elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(7) > div > div.q-dialog__inner.flex.no-pointer-events.q-dialog__inner--minimized.q-dialog__inner--standard.fixed-full.flex-center > div > form > div.row.justify-between.q-mx-lg > div.col-6 > label.q-field.row.no-wrap.items-start.q-field--outlined.q-input.q-field--rounded.q-field--labeled.q-field--error.q-field--highlighted.q-field--with-bottom > div > div.q-field__bottom.row.items-start.q-field__bottom--animated > div > div')
         self.assertEqual(elem.text, "Заполните название", 'Нет сообщения об ошибке')
 
-        # # Выбрать доску
-        # elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(7) > div > div.q-dialog__inner.flex.no-pointer-events.q-dialog__inner--minimized.q-dialog__inner--standard.fixed-full.flex-center > div > form > div.row.justify-between.q-mx-lg > div.col-6 > div > label > div > div')
-        # elem.click()
-        # time.sleep(0.5)
-
-        # elem: WebElement = self.driver.find_element(By.XPATH, "//div[@class='q-virtual-scroll__content']/div[1]")
-        # elem.click()
-        # time.sleep(0.5)
-
         # Название пина
         elem: WebElement = self.driver.find_element(By.XPATH, "//form[@class='q-form column justify-around q-mt-lg']//label[1]//input")
         elem.send_keys("Попуг")
@@ -540,6 +532,200 @@ class MainTestCase(unittest.TestCase):
         elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(2) > div > div > div > figure > div.q-card__actions.justify-start.q-card__actions--horiz.row > div')
         self.assertEqual(elem.text, pin_text, 'Нет сохраненного пина на доске')
     
+    def edit_pin_boards_profile(self):
+
+        self.driver.get("http://localhost:8082/#/Login")
+        self.assertEqual(self.driver.title, 'pin', 'Открыто не то окно')
+
+        # Заполнение формы авторизации
+        elem: WebElement = self.driver.find_element(By.XPATH, "//form[@class='q-form q-gutter-md']/label[1]//input")
+        elem.send_keys('jojir')
+        time.sleep(0.2)
+
+        elem: WebElement = self.driver.find_element(By.XPATH, "//form[@class='q-form q-gutter-md']/label[2]//input")
+        elem.send_keys('qwe123321')
+        time.sleep(0.2)
+
+        # Войти
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#window_reg > form > div:nth-child(4) > button')
+        elem.send_keys(Keys.ENTER)
+
+        # Проверка авторизации
+        for _ in range(10):
+            time.sleep(1)
+            try:
+                elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(1) > div > div:nth-child(3) > button')
+                elem.click()
+                elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(6) > div > div > div:nth-child(3) > div.q-item__section.column.q-item__section--main.justify-center > div')
+                if elem.text == 'Выйти':
+                    break
+            except NoSuchElementException:
+                continue
+        else:
+            self.assert_(False, 'Не удалось авторизоваться')
+        
+        # Перейти на доску
+        self.driver.get('http://localhost:8082/#/board/1')
+        time.sleep(1)
+
+        # Редактирование пина
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(2) > div > div > div > figure > div.q-card__actions.justify-start.q-card__actions--horiz.row.row.justify-around > button')
+        elem.click()
+        time.sleep(0.2)
+
+        # Редактирование названия пина
+        elem: WebElement = self.driver.find_element(By.XPATH, "//form[@class='q-form q-gutter-md']//label[1]//input")
+        elem.send_keys(Keys.SHIFT + Keys.HOME + Keys.DELETE)
+        elem.send_keys("Попуг!!!!")
+        time.sleep(0.2)
+
+        # Редактирование описания пина
+        elem: WebElement = self.driver.find_element(By.XPATH, "//form[@class='q-form q-gutter-md']//label[2]//textarea")
+        elem.send_keys(Keys.SHIFT + Keys.HOME + Keys.DELETE)
+        elem.send_keys("ОЧЕНЬ красивый попуг")
+        time.sleep(0.2)
+
+        # Сохранить изменения
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(6) > div > div.q-dialog__inner.flex.no-pointer-events.q-dialog__inner--minimized.q-dialog__inner--standard.fixed-full.flex-center > div > div > form > div.row.justify-between.self-center.q-mx-lg.q-mt-xl > button.q-btn.q-btn-item.non-selectable.no-outline.q-btn--standard.q-btn--rectangle.bg-orange.text-white.q-btn--actionable.q-focusable.q-hoverable.q-mx-sm')
+        elem.click()
+        time.sleep(0.2)
+
+        # Открыть пин для проверки изменений
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(2) > div > div > div')
+        elem.click()
+        time.sleep(1)
+
+        # Проверка названия
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(2) > div > div > div > div.row.col-6 > div.column.q-mx-sm.col-12 > div.self-center.q-my-sm.text-h4')
+        self.assertEqual(elem.text, "Попуг!!!!", 'Название не было изменено')
+
+        # Проверка описания
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(2) > div > div > div > div.row.col-6 > div.column.q-mx-sm.col-12 > div.text-center.text-h5.q-my-sm')
+        self.assertEqual(elem.text, "ОЧЕНЬ красивый попуг", 'Описание не было изменено')
+
+        # ----------------------------------------------------------------------------------------------------------------------
+
+        # Перейти на доску
+        self.driver.get('http://localhost:8082/#/board/1')
+        time.sleep(1)
+
+        # Открыть настройки доски
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#btn-set > span.q-btn__content.text-center.col.items-center.q-anchor--skip.justify-center.row > i')
+        elem.click()
+        time.sleep(1)
+
+        # Редактирование названия доски
+        elem: WebElement = self.driver.find_element(By.XPATH, "//form[@class='q-form q-gutter-md']//label[1]//input")
+        elem.send_keys(Keys.SHIFT + Keys.HOME + Keys.DELETE)
+        elem.send_keys("Моя доска")
+        time.sleep(0.2)
+
+        # Сохранить изменения
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(6) > div > div.q-dialog__inner.flex.no-pointer-events.q-dialog__inner--minimized.q-dialog__inner--standard.fixed-full.flex-center > div > div > form > div.roe > button.q-btn.q-btn-item.non-selectable.no-outline.q-btn--standard.q-btn--rectangle.bg-orange.text-white.q-btn--actionable.q-focusable.q-hoverable')
+        elem.click()
+        time.sleep(0.2)
+
+        # Проверка названия
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(2) > q-title > div > h4')
+        self.assertEqual(elem.text, "Моя доска", 'Название не было изменено')
+
+        # ----------------------------------------------------------------------------------------------------------------------
+
+        # Перейти в настройки профиля
+        self.driver.get('http://localhost:8082/#/settings')
+        time.sleep(1)
+
+        # Редактирование почты
+        elem: WebElement = self.driver.find_element(By.XPATH, "//form[@class='q-form']//label[2]//input")
+        elem.send_keys(Keys.SHIFT + Keys.HOME + Keys.DELETE)
+        elem.send_keys("zura@mail.ru")
+        time.sleep(0.2)
+
+        # Сохранить изменения
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(2) > div > form > div.row.q-pa-md.q-gutter-sm > button.q-btn.q-btn-item.non-selectable.no-outline.q-btn--standard.q-btn--rectangle.bg-orange.text-white.q-btn--actionable.q-focusable.q-hoverable')
+        elem.click()
+        time.sleep(0.2)
+
+        # Перейти в профиль
+        self.driver.get('http://localhost:8082/#/profile/jojir')
+        time.sleep(0.1)
+
+        # Проверка изменений
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(2) > div.info > div')
+        self.assertEqual(elem.text, "zura@mail.ru", 'Почта не была изменена')
+
+    def delete_pin_boards(self):
+
+        self.driver.get("http://localhost:8082/#/Login")
+        self.assertEqual(self.driver.title, 'pin', 'Открыто не то окно')
+
+        # Заполнение формы авторизации
+        elem: WebElement = self.driver.find_element(By.XPATH, "//form[@class='q-form q-gutter-md']/label[1]//input")
+        elem.send_keys('jojir')
+        time.sleep(0.2)
+
+        elem: WebElement = self.driver.find_element(By.XPATH, "//form[@class='q-form q-gutter-md']/label[2]//input")
+        elem.send_keys('qwe123321')
+        time.sleep(0.2)
+
+        # Войти
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#window_reg > form > div:nth-child(4) > button')
+        elem.send_keys(Keys.ENTER)
+
+        # Проверка авторизации
+        for _ in range(10):
+            time.sleep(1)
+            try:
+                elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(1) > div > div:nth-child(3) > button')
+                elem.click()
+                elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(6) > div > div > div:nth-child(3) > div.q-item__section.column.q-item__section--main.justify-center > div')
+                if elem.text == 'Выйти':
+                    break
+            except NoSuchElementException:
+                continue
+        else:
+            self.assert_(False, 'Не удалось авторизоваться')
+
+        # Перейти на доску
+        self.driver.get('http://localhost:8082/#/board/1')
+        time.sleep(1)
+
+        # Редактирование пина
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#app > div:nth-child(2) > div > div > div > figure > div.q-card__actions.justify-start.q-card__actions--horiz.row.row.justify-around > button')
+        elem.click()
+        time.sleep(0.5)
+
+        # Удалить пин
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(6) > div > div.q-dialog__inner.flex.no-pointer-events.q-dialog__inner--minimized.q-dialog__inner--standard.fixed-full.flex-center > div > div > form > div.row.justify-between.self-center.q-mx-lg.q-mt-xl > button.q-btn.q-btn-item.non-selectable.no-outline.q-btn--standard.q-btn--rectangle.bg-negative.text-white.q-btn--actionable.q-focusable.q-hoverable')
+        elem.click()
+        time.sleep(1)
+
+        # Подтвердить удаление
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#q-notify > div > div.q-notifications__list.q-notifications__list--center.fixed.column.no-wrap.flex-center > div > div > div.q-notification__actions.row.items-center.justify-end.q-notification__actions--with-media > button.q-btn.q-btn-item.non-selectable.no-outline.q-btn--flat.q-btn--rectangle.text-red.q-btn--actionable.q-focusable.q-hoverable > span.q-btn__content.text-center.col.items-center.q-anchor--skip.justify-center.row > span')
+        elem.click()
+        time.sleep(1)
+
+        # ----------------------------------------------------------------------------------------------------------------------
+
+        # Перейти на доску
+        self.driver.get('http://localhost:8082/#/board/1')
+        time.sleep(1)
+
+        # Открыть настройки доски
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#btn-set > span.q-btn__content.text-center.col.items-center.q-anchor--skip.justify-center.row > i')
+        elem.click()
+        time.sleep(0.5)
+
+        # Удалить доску
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(6) > div > div.q-dialog__inner.flex.no-pointer-events.q-dialog__inner--minimized.q-dialog__inner--standard.fixed-full.flex-center > div > div > form > div.roe > button.q-btn.q-btn-item.non-selectable.no-outline.q-btn--standard.q-btn--rectangle.bg-negative.text-white.q-btn--actionable.q-focusable.q-hoverable.q-mx-lg')
+        elem.click()
+        time.sleep(1)
+
+        # Подтвердить удаление
+        elem: WebElement = self.driver.find_element(By.CSS_SELECTOR, '#q-notify > div > div.q-notifications__list.q-notifications__list--center.fixed.column.no-wrap.flex-center > div > div > div.q-notification__actions.row.items-center.justify-end.q-notification__actions--with-media > button.q-btn.q-btn-item.non-selectable.no-outline.q-btn--flat.q-btn--rectangle.text-red.q-btn--actionable.q-focusable.q-hoverable > span.q-btn__content.text-center.col.items-center.q-anchor--skip.justify-center.row > span')
+        elem.click()
+        time.sleep(1)
+    
     def tearDown(self) -> None:
         self.driver.close()
 
@@ -562,6 +748,8 @@ def suite():
     suite.addTest(MainTestCase('test_add_boards'))
     suite.addTest(MainTestCase('test_add_pin'))
     suite.addTest(MainTestCase('test_save_other_user_pin'))
+    suite.addTest(MainTestCase('edit_pin_boards_profile'))
+    suite.addTest(MainTestCase('delete_pin_boards'))
     return suite
 
 if __name__ == "__main__":
