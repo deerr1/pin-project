@@ -32,3 +32,10 @@ services:
       retries: 5
     ports:
       - 5432:5432
+  elastick:
+    container_name: elastick
+    image: elasticsearch:7.0.1
+    ports:
+      - 9200:9200
+    environment:
+      - discovery.type=single-node
