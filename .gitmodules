@@ -1,9 +1,9 @@
 [submodule "pin-front"]
 	path = pin-front
-	url = https://gitlab.com/p3383/pin-front.git
+	url = https://github.com/deerr1/pin-front.git
 [submodule "pin-back"]
 	path = pin-back
-	url = https://gitlab.com/p3383/pin-back.git
+	url = https://github.com/deerr1/pin-back.git
 [submodele "pin-front"]
 	branch = master
 [submodele "pin-back"]
